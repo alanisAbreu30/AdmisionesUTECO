@@ -1,0 +1,79 @@
+﻿@page "/Solicitud"
+
+@using System.ComponentModel.DataAnnotations
+@using admisionesuteco.web.Domain.Entities
+
+
+
+
+
+
+<PageTitle>Solicitud/admision</PageTitle>
+
+
+
+<EditForm Model="@student" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="firstName">Nombre:</label>
+        <InputText id="firstName" @bind-Value="student.FirstName" class="form-control" />
+        <ValidationMessage For="@(() => student.FirstName)" />
+    </div>
+
+    <div>
+        <label for="lastName">Apellido:</label>
+        <InputText id="lastName" @bind-Value="student.LastName" class="form-control" />
+        <ValidationMessage For="@(() => student.LastName)" />
+    </div>
+
+    <div>
+        <label for="email">Email:</label>
+        <InputText id="email" @bind-Value="student.Email" type="email" class="form-control" />
+        <ValidationMessage For="@(() => student.Email)" />
+    </div>
+
+    <div>
+        <label for="birthDate">Fecha de Nacimiento:</label>
+        <InputDate id="birthDate" @bind-Value="student.BirthDate" class="form-control" />
+        <ValidationMessage For="@(() => student.BirthDate)" />
+    </div>
+
+    <div>
+        <label for="selectedCareer">Carrera:</label>
+        <InputSelect id="selectedCareer" @bind-Value="student.SelectedCareer" class="form-control">
+            <option value="">Selecciona una carrera</option>
+            <option value="Ingeniería">Ingeniería</option>
+            <option value="Medicina">Medicina</option>
+            <option value="Derecho">Derecho</option>
+            <option value="Arquitectura">Arquitectura</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => student.SelectedCareer)" />
+    </div>
+
+    <div>
+        <label for="document">Subir Documento:</label>
+        <InputFile id="document" OnChange="HandleFileSelected" class="form-control" />
+        <ValidationMessage For="@(() => student.DocumentPath)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrar</button>
+</EditForm>
+
+@code {
+    private Estudiante student = new Estudiante();
+
+    private void HandleValidSubmit()
+    {
+        // Lógica para guardar los datos del estudiante y el documento en la base de datos
+        Console.WriteLine($"Estudiante registrado: {student.FirstName} {student.LastName}, Email: {student.Email}, Carrera: {student.SelectedCareer}");
+    }
+
+    private void HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        student.DocumentPath = e.File.Name;
+    }
+}
+
+
